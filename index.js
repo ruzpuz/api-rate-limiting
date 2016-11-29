@@ -24,6 +24,9 @@
         var x;
         return isNaN(value) ? !1 : (x = parseFloat(value), (0 | x) === x);
     }
+    function isString(element) {
+        return (typeof element === 'string' || element instanceof String);
+    }
     function invalidConfiguration() {
         throw new Error('Invalid configuration. Please check manual');
     }
