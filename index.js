@@ -10,6 +10,10 @@
         "uniqueField" : {
             "section" : 'header',
             "name" : 'token'
+        },
+        "cookieParser" : {
+            "secret" : '',
+            "options" : ''
         }
     },
         units = {
@@ -19,10 +23,13 @@
             "days": 86400
         };
 
-
     function isInt(value) {
-        var x;
-        return (isNaN(value) || isString(value))  ? !1 : (x = parseFloat(value), (0 | x) === x);
+        var x = parseInt(value);
+
+        if(isNaN(x) || isString(value)) {
+            return false;
+        }
+        return (0 | x) === x;
     }
     function isString(element) {
         return (typeof element === 'string' || element instanceof String);
