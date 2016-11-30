@@ -46,7 +46,7 @@
         }
         function regularCall() {
             if(available > 0) {
-                if(available == burst) {
+                if(available === burst) {
                     burst -= 1;
                 }
                 available -= 1;
