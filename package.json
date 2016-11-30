@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/ruzpuz/api-rate-limiting/issues"
   },
-  "homepage": "https://github.com/ruzpuz/api-rate-limiting#readme"
+  "homepage": "https://github.com/ruzpuz/api-rate-limiting#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.3"
+  }
 }
