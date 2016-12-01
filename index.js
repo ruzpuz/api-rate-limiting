@@ -1,8 +1,8 @@
 (function() {
     'use strict';
 
-    var rateLimitingService = require('./rate-limiting/rate-limiting.service'),
-        rateLimitingRoute = require('./rate-limiting/rate-limiting.route'),
+    var rateLimitingService = require('./rate-limiting/rate-limiting.service.js'),
+        rateLimitingMiddleware = require('./rate-limiting/rate-limiting.middleware.js'),
         testConfig = {
         "calls" : 1,
         "time" : 100,
@@ -20,9 +20,7 @@
 
     function configure(configuration) {
         rateLimitingService.validate(configuration);
-
-        console.log(configuration);
-        console.log('true');
+        return rateLimitingMiddleware.createMiddleware(configuration);
     }
 
     function test() {

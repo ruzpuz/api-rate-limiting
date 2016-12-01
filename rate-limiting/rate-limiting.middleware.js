@@ -4,7 +4,7 @@
     var rateLimitingController = require('./rate-limiting.controller');
 
 
-    function includeRoute(configuration) {
+    function createMiddleware(configuration) {
 
         var uniqueField;
 
@@ -35,6 +35,6 @@
     }
 
     module.exports = {
-        "includeRoute" : includeRoute
+        "createMiddleware" : createMiddleware
     };
 }());

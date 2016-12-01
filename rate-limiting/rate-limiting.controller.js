@@ -2,7 +2,7 @@
     'use strict';
 
     var errorService = require('../common/error.service'),
-        rateLimitingService = require('./rate-limiting.service');
+        rateLimitingService = require('./rate-limiting.service.js');
 
     function handleApiCall(token, config, callback) {
         if(!token) {
