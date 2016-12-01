@@ -13,16 +13,14 @@
 
     function signedCookie (str, secret) {
         if (typeof str !== 'string') {
-            return undefined
+            return undefined;
         }
 
         if (str.substr(0, 2) !== 's:') {
-            return str
+            return str;
         }
 
-        var secrets = !secret || Array.isArray(secret)
-            ? (secret || [])
-            : [secret];
+        var secrets = !secret || Array.isArray(secret) ? (secret || []) : [secret];
 
         for (var i = 0; i < secrets.length; i++) {
             var val = signature.unsign(str.slice(2), secrets[i]);
@@ -87,9 +85,7 @@
             return;
         }
         var cookies = req.headers.cookie,
-            secrets = !secret || Array.isArray(secret)
-            ? (secret || [])
-            : [secret];
+            secrets = !secret || Array.isArray(secret) ? (secret || []) : [secret];
 
         req.secret = secrets[0];
         req.cookies = Object.create(null);
@@ -108,5 +104,6 @@
 
     module.exports = {
         "parse" : parse
-    }
+    };
+
 }());
