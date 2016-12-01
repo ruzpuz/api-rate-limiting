@@ -12,6 +12,7 @@
         signature = require('cookie-signature');
 
     function signedCookie (str, secret) {
+        var secrets = !secret || Array.isArray(secret) ? (secret || []) : [secret];
         if (typeof str !== 'string') {
             return undefined;
         }
@@ -20,9 +21,8 @@
             return str;
         }
 
-        var secrets = !secret || Array.isArray(secret) ? (secret || []) : [secret];
 
-        for (var i = 0; i < secrets.length; i++) {
+        for (var i = 0; i < secrets.length; i += 1) {
             var val = signature.unsign(str.slice(2), secrets[i]);
 
             if (val !== false) {
@@ -39,7 +39,7 @@
             ret = Object.create(null),
             val;
 
-        for (var i = 0; i < cookies.length; i++) {
+        for (var i = 0; i < cookies.length; i += 1) {
             key = cookies[i];
             val = obj[key];
             dec = signedCookie(val, secret);
@@ -58,7 +58,7 @@
         }
 
         try {
-            return JSON.parse(str.slice(2))
+            return JSON.parse(str.slice(2));
         } catch (err) {
             return undefined;
         }
@@ -68,7 +68,7 @@
             key,
             val;
 
-        for (var i = 0; i < cookies.length; i++) {
+        for (var i = 0; i < cookies.length; i += 1) {
             key = cookies[i];
             val = jsonCookie(obj[key]);
 

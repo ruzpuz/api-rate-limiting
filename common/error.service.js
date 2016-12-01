@@ -5,7 +5,7 @@
         return {
             "code" : code,
             "message" : message
-        }
+        };
     }
 
     module.exports = {
