@@ -115,9 +115,6 @@
         }
 
         function checkAvailability() {
-            console.log( timestamp + ' ' +available + ' ' + burst );
-            console.log(config);
-
             var previousTimeSeconds = timestamp.getHours() * 3600 + timestamp.getMinutes() * 60 + timestamp.getSeconds(),
                 currentTimeSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
             if((now - timestamp) > (1000 * config.time/config.calls)) {
