@@ -60,21 +60,21 @@
         function saveRedisData() {
             function burstCallback(error) {
                 if(error) {
-                    callback(errorService.createError(500, "Redis reading error - timestamp "));
+                    callback(errorService.createError(500, "Redis writing error - timestamp "));
                 }else {
                     callback(null);
                 }
             }
             function availableCallback(error) {
                 if(error) {
-                    callback(errorService.createError(500, "Redis reading error - timestamp "));
+                    callback(errorService.createError(500, "Redis writing error - timestamp "));
                 }else {
                     redisClient.set(token + '_burst', burst, burstCallback);
                 }
             }
             function timestampCallback(error) {
                 if(error) {
-                    callback(errorService.createError(500, "Redis reading error - timestamp "));
+                    callback(errorService.createError(500, "Redis writing error - timestamp "));
                 }else {
                     redisClient.set(token + '_available', available, availableCallback);
                 }
@@ -115,10 +115,13 @@
         }
 
         function checkAvailability() {
+            console.log( timestamp + ' ' +available + ' ' + burst );
+            console.log(config);
+
             var previousTimeSeconds = timestamp.getHours() * 3600 + timestamp.getMinutes() * 60 + timestamp.getSeconds(),
                 currentTimeSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-            if(now - timestamp > (1000 * config.seconds/config.calls)) {
-                if(Math.floor(previousTimeSeconds/100) < Math.floor(currentTimeSeconds/100)) {
+            if((now - timestamp) > (1000 * config.time/config.calls)) {
+                if(Math.floor(previousTimeSeconds/config.time) < Math.floor(currentTimeSeconds/config.time)) {
                     resetTokenData();
                 }
                 regularCall();
