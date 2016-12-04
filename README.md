@@ -53,7 +53,9 @@ Configuration object should have following attributes:
  
 Object ***cookieParser*** has 'section' and 'secret' fields that are used as described [here](https://github.com/expressjs/cookie-parser#cookieparsersecret-options)
 
+### Configuration example
 
+This is an example of a valid configuration object. 
 
     {
         "calls" : 10,
@@ -63,11 +65,7 @@ Object ***cookieParser*** has 'section' and 'secret' fields that are used as des
         "uniqueField" : { 
             "section" : 'header',
             "name" : 'token'
-        },
-        "cookieParser" : {
-            "secret" : '',
-            "options" : ''
         }
     }
     
-This is an example of a valid configuration object. This configuration will mean that our API should handle 10 calls per 100 seconds. User will be identified by a token attribute in header section. 
+This configuration will mean that our API should handle 10 calls per 100 seconds. User will be identified by a token attribute in header section. 
