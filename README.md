@@ -18,6 +18,7 @@ Express middleware that will limit API calls as configured.
     var app = express()
     app.use('/api/path', rateLimiter(configuration))
 
+
 ### How does it work
 
 This middleware will try to distribute API calls per user to be as uniform as possible. In example if we allow 10 calls per 100 seconds middleware will allow 1 call per 10 seconds. Since this rule is too strict we introduce a **burst** variable that will describe how many burst API calls should the middleware allow even in cases that would violate uniform distribution of API calls.
