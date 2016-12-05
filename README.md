@@ -23,7 +23,7 @@ Express middleware that will limit API calls as configured.
 
 ### How does it work
 
-This middleware will try to distribute API calls per user to be as uniform as possible. In example if we allow 10 calls per 100 seconds middleware will allow 1 call per 10 seconds. Since this rule is too strict we introduce a **burst** variable that will describe how many burst API calls should the middleware allow even in cases that would violate uniform distribution of API calls.
+This middleware will try to distribute API calls per user to be as uniform as possible. In example if we allow 10 calls per 100 seconds middleware will allow 1 call per 10 seconds. Since this rule is too strict we introduce a **burst** variable that will describe how many API calls should the middleware allow even in cases that would violate uniform distribution of API calls.
  
 So if we configure the middleware to allow 10 calls per 100 seconds with burst of 10 that means that all 10 calls can be served as soon as possible, but the remaining time of 100 seconds the user will get a 429 too many requests error. 
 
