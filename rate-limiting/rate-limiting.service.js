@@ -96,6 +96,7 @@
             available =  config.calls;
         }
         function initializeToken() {
+            //todo add fetching privileges function
             resetTokenData();
         }
         function regularCall() {
