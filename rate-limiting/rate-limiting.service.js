@@ -3,6 +3,7 @@
 
     var errorService = require('../common/error.service'),
         redisClient = require('redis').createClient(),
+        getUserLimitations = null,
         units = {
             "seconds": 1,
             "minutes": 60,
@@ -37,6 +38,13 @@
             configuration.burst = 0;
         } else if(isInt(!configuration.burst)) {
             invalidConfiguration();
+        }
+        if(configuration.getUserLimitations) {
+            if(typeof configuration.getUserLimitations !== 'function') {
+                invalidConfiguration();
+            } else {
+                getUserLimitations = configuration.getUserLimitations;
+            }
         }
 
         if(!configuration.uniqueField) {
@@ -147,7 +155,7 @@
                 if(error) {
                     callback(errorService.createError(500, "Redis reading error - timestamp "));
                 } else if(!value) {
-                    initializeToken(token, callback);
+                    initializeToken();
                 } else {
                     timestamp = new Date(value);
                     redisClient.get(token + '_available', availableCallback);
