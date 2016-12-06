@@ -97,7 +97,6 @@
         }
         function initializeToken() {
             resetTokenData();
-            saveRedisData();
         }
         function regularCall() {
             if(available > 0) {
@@ -156,6 +155,7 @@
                     callback(errorService.createError(500, "Redis reading error - timestamp "));
                 } else if(!value) {
                     initializeToken();
+                    regularCall();
                 } else {
                     timestamp = new Date(value);
                     redisClient.get(token + '_available', availableCallback);
