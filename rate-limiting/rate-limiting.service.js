@@ -90,7 +90,7 @@
 
             redisClient.set(token + '_timestamp', timestamp.toISOString(), timestampCallback);
         }
-        function resetTokenData() {
+        function resetTokenData(newBurst, newAvailable) {
             timestamp =  new Date();
             burst =  config.burst;
             available =  config.calls;
