@@ -13,11 +13,11 @@ Express middleware that will limit API calls as configured.
 
 
 
-    var express = require('express')
-    var rateLimiter = require('api-rate-limiting')
+    var express = require('express');
+    var rateLimiter = require('api-rate-limiting');
 
-    var app = express()
-    app.use('/api/path', rateLimiter(configuration))
+    var app = express();
+    app.use('/api/path', rateLimiter(configuration));
 
 
 

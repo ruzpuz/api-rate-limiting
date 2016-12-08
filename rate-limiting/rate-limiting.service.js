@@ -101,16 +101,32 @@
                 timestamp =  new Date();
                 burst =  config.burst;
                 available =  config.calls;
-            } else {
+            } else if(newConfiguration) {
+                if(!isInt(newConfiguration.calls)||
+                    !isInt(newConfiguration.time) ||
+                    !units[newConfiguration.unit]) {
+                    invalidConfiguration();
+                }
+                if(!newConfiguration.burst && newConfiguration.burst !== 0) {
+                    newConfiguration.burst = 0;
+                } else if(isInt(!newConfiguration.burst)) {
+                    invalidConfiguration();
+                }
+                newConfiguration.time *= units[newConfiguration.unit];
 
+            } else {
+                timestamp =  new Date();
+                burst =  config.burst;
+                available =  config.calls;
             }
-            timestamp =  new Date();
-            burst =  config.burst;
-            available =  config.calls;
+
         }
         function initializeToken() {
-            //todo add fetching privileges function
-            resetTokenData();
+            if(getUserLimitations) {
+                getUserLimitations(token, resetTokenData);
+            } else {
+                resetTokenData();
+            }
         }
         function regularCall() {
             if(available > 0) {
