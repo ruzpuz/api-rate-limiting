@@ -2,6 +2,8 @@
     'use strict';
 
     var errorService = require('../common/error.service'),
+        events = require('events'),
+        eventEmitter = new events.EventEmitter(),
         redisClient = require('redis').createClient(),
         getUserLimitations = null,
         units = {
@@ -90,7 +92,18 @@
 
             redisClient.set(token + '_timestamp', timestamp.toISOString(), timestampCallback);
         }
-        function resetTokenData(newBurst, newAvailable) {
+        function resetTokenData(error, newConfiguration) {
+            if(error) {
+                eventEmitter.emit('rate-limiter-error', 'warn', {
+                    "message" : 'getUserLimitations function provided an error object, That means that it was not possible to get user specific limitations. Falling back to default value, but take this error into account.',
+                    "details" : error
+                });
+                timestamp =  new Date();
+                burst =  config.burst;
+                available =  config.calls;
+            } else {
+
+            }
             timestamp =  new Date();
             burst =  config.burst;
             available =  config.calls;
