@@ -25,8 +25,12 @@
     function isString(element) {
         return (typeof element === 'string' || element instanceof String);
     }
-    function invalidConfiguration() {
-        throw new Error('Invalid configuration. Please check manual');
+    function broadcastLogEvent(level, message) {
+        eventEmitter.emit('rate-limiter-info', level, message);
+    }
+    function invalidConfiguration(details) {
+        eventEmitter.emit('rate-limiter-info', 'error', details);
+        throw new Error('Invalid configuration. Please check manual. Error: \n' + details);
     }
 
     function validate(configuration) {
@@ -34,16 +38,21 @@
             !isInt(configuration.calls)||
             !isInt(configuration.time) ||
             !units[configuration.unit]) {
-            invalidConfiguration();
-        }
+            invalidConfiguration({
+                "message" : 'Variables calls and unit should be integers. Variable unit can be seconds, minutes, hours or days.'
+            });        }
         if(!configuration.burst && configuration.burst !== 0) {
             configuration.burst = 0;
         } else if(isInt(!configuration.burst)) {
-            invalidConfiguration();
+            invalidConfiguration({
+                "message" : 'Variable burst should be an integer. Default value is 0'
+            });
         }
         if(configuration.getUserLimitations) {
             if(typeof configuration.getUserLimitations !== 'function') {
-                invalidConfiguration();
+                invalidConfiguration({
+                    "message" : 'Variable getUserLimitations should be a function. If no function is provided then default configuration is used.'
+                });
             } else {
                 getUserLimitations = configuration.getUserLimitations;
             }
@@ -56,8 +65,9 @@
         } else if(!((configuration.uniqueField.section === 'header' && isString(configuration.uniqueField.name)) ||
             (configuration.uniqueField.section === 'cookie' && isString(configuration.uniqueField.name)) ||
             configuration.uniqueField.section === 'ip')){
-            invalidConfiguration();
-        }
+            invalidConfiguration({
+                "message" : 'Unable to get uniqueField. This middleware can limit API calls using header, cookie, or IP. IP is default.'
+            });        }
 
         configuration.time *= units[configuration.unit];
     }
@@ -94,10 +104,10 @@
         }
         function resetTokenData(error, newConfiguration) {
             if(error) {
-                eventEmitter.emit('rate-limiter-error', 'warn', {
-                    "message" : 'getUserLimitations function provided an error object, That means that it was not possible to get user specific limitations. Falling back to default value, but take this error into account.',
-                    "details" : error
-                });
+                broadcastLogEvent('warn', {
+                        "message" : 'getUserLimitations function provided an error object, That means that it was not possible to get user specific limitations. Falling back to default value, but take this error into account.',
+                        "details" : error
+                    });
                 timestamp =  new Date();
                 burst =  config.burst;
                 available =  config.calls;
@@ -105,12 +115,16 @@
                 if(!isInt(newConfiguration.calls)||
                     !isInt(newConfiguration.time) ||
                     !units[newConfiguration.unit]) {
-                    invalidConfiguration();
+                    invalidConfiguration({
+                        "message" : 'Variables calls and unit should be integers. Variable unit can be seconds, minutes, hours or days.'
+                    });
                 }
                 if(!newConfiguration.burst && newConfiguration.burst !== 0) {
                     newConfiguration.burst = 0;
                 } else if(isInt(!newConfiguration.burst)) {
-                    invalidConfiguration();
+                    invalidConfiguration({
+                        "message" : 'Variable burst should be an integer. Default value is 0'
+                    });
                 }
                 newConfiguration.time *= units[newConfiguration.unit];
 
@@ -194,13 +208,15 @@
 
             redisClient.get(token + '_timestamp', timestampCallback);
         }
+
         getRedisData();
 
     }
 
     module.exports = {
-        "checkApiRate" : checkApiRate,
-        "validate" : validate
+        "validate" : validate,
+        "broadcastLogEvent" : broadcastLogEvent,
+        "checkApiRate" : checkApiRate
     };
 
 }());
