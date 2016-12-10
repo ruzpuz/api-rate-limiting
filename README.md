@@ -35,26 +35,45 @@ Configuration object should have following attributes:
     time::Integer
     unit::String (seconds|minutes|hours|days)
     burst::Integer - optional
+    getUserLimitations::Function - optional
     uniqueField::Object - optional
     cookieParser::Object - optional
     
- Object **uniqueField** has following attributes
+Object **uniqueField** has following attributes
  
     section::String (header|cookie|ip)
     name::String
     
- This object will tell the middleware where to search for the field that will identify the user. In example if we provide:
+This object will tell the middleware where to search for the field that will identify the user. In example if we provide:
  
     "uniqueField" : {
          "section" : 'header',
          "name" : 'token'
      }
  
- The middleware will check for token field in headers. That basically mean that any user identified by token field in header will be treated as above configured. 
+The middleware will check for token field in headers. That basically mean that any user identified by token field in header will be treated as above configured. 
  
- If unique field's section is set to be cookie then the middleware will try to parse cookies in exactly the same way as [cookie-parser](https://github.com/expressjs/cookie-parser) library. 
+If unique field's section is set to be cookie then the middleware will try to parse cookies in exactly the same way as [cookie-parser](https://github.com/expressjs/cookie-parser) library. 
  
 Object ***cookieParser*** has 'section' and 'secret' fields that are used as described [here](https://github.com/expressjs/cookie-parser#cookieparsersecret-options)
+
+### Different rates per user
+
+If different consumers of API have different rates user can pass a function to middleware that will be called when necessary. The function should asynchronously pass rates of an user back to middleware. 
+
+Arguments passed to getUserLimitations function: 
+
+- token - user's unique identifier
+- callback - function that will be called to pass back user-specific configuration to middleware
+
+Callback function should be called with 2 arguments:
+- error
+- configuration 
+  
+      calls::Integer
+      time::Integer
+      unit::String (seconds|minutes|hours|days)
+      burst::Integer - optional
 
 ### Configuration example
 
@@ -64,7 +83,7 @@ This is an example of a valid configuration object.
         "calls" : 10,
         "time" : 100, 
         "unit" : 'seconds', 
-        "burst": 10, 
+        "burst": 10,
         "uniqueField" : { 
             "section" : 'header',
             "name" : 'token'
