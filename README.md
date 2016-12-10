@@ -68,12 +68,14 @@ Arguments passed to getUserLimitations function:
 
 Callback function should be called with 2 arguments:
 - error
-- configuration 
-  
-      calls::Integer
-      time::Integer
-      unit::String (seconds|minutes|hours|days)
-      burst::Integer - optional
+- configuration object
+
+Example object
+
+    calls::Integer
+    time::Integer
+    unit::String (seconds|minutes|hours|days)
+    burst::Integer - optional
 
 ### Configuration example
 
