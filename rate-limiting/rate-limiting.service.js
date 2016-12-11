@@ -4,7 +4,7 @@
     var errorService = require('../common/error.service'),
         events = require('events'),
         eventEmitter = new events.EventEmitter(),
-        redisClient = require('redis').createClient(),
+        redisClient = null,
         getUserLimitations = null,
         units = {
             "seconds": 1,
@@ -32,6 +32,9 @@
         eventEmitter.emit('rate-limiter-info', 'error', details);
         throw new Error('Invalid configuration. Please check manual. Error: \n' + details);
     }
+    function createRedisClient(args) {
+        redisClient =  require('redis').createClient.apply(null, args);
+    }
 
     function validate(configuration) {
         if( !configuration ||
@@ -47,6 +50,17 @@
             invalidConfiguration({
                 "message" : 'Variable burst should be an integer. Default value is 0'
             });
+        }
+        if(configuration.redisCreateArguments) {
+            if(Array.isArray(configuration.redisCreateArguments)) {
+                createRedisClient(configuration.redisCreateArguments);
+            } else {
+                invalidConfiguration({
+                    "message" : 'Arguments for creating of redis client should be in an Array '
+                });
+            }
+        } else {
+            createRedisClient();
         }
         if(configuration.getUserLimitations) {
             if(typeof configuration.getUserLimitations !== 'function') {
@@ -67,7 +81,8 @@
             configuration.uniqueField.section === 'ip')){
             invalidConfiguration({
                 "message" : 'Unable to get uniqueField. This middleware can limit API calls using header, cookie, or IP. IP is default.'
-            });        }
+            });
+        }
 
         configuration.time *= units[configuration.unit];
     }
