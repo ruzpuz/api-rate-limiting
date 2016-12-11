@@ -38,17 +38,18 @@
 
     function validate(configuration) {
         if( !configuration ||
-            !isInt(configuration.calls)||
-            !isInt(configuration.time) ||
+            !isInt(configuration.calls) || configuration.calls <= 0 ||
+            !isInt(configuration.time) || configuration.time <= 0 ||
             !units[configuration.unit]) {
             invalidConfiguration({
-                "message" : 'Variables calls and unit should be integers. Variable unit can be seconds, minutes, hours or days.'
-            });        }
+                "message" : 'Variables calls and unit should be  positive integers. Variable unit can be seconds, minutes, hours or days.'
+            });
+        }
         if(!configuration.burst && configuration.burst !== 0) {
             configuration.burst = 0;
-        } else if(isInt(!configuration.burst)) {
+        } else if(isInt(!configuration.burst) || configuration.burst <= 0 ) {
             invalidConfiguration({
-                "message" : 'Variable burst should be an integer. Default value is 0'
+                "message" : 'Variable burst should be a positive integer. Default value is 0.'
             });
         }
         if(configuration.redisCreateArguments) {
@@ -56,7 +57,7 @@
                 createRedisClient(configuration.redisCreateArguments);
             } else {
                 invalidConfiguration({
-                    "message" : 'Arguments for creating of redis client should be in an Array '
+                    "message" : 'Arguments for creating of redis client should be in an Array.'
                 });
             }
         } else {
@@ -127,18 +128,18 @@
                 burst =  config.burst;
                 available =  config.calls;
             } else if(newConfiguration) {
-                if(!isInt(newConfiguration.calls)||
-                    !isInt(newConfiguration.time) ||
+                if( !isInt(newConfiguration.calls) || newConfiguration.calls <= 0 ||
+                    !isInt(newConfiguration.time) || newConfiguration.time <= 0 ||
                     !units[newConfiguration.unit]) {
                     invalidConfiguration({
-                        "message" : 'Variables calls and unit should be integers. Variable unit can be seconds, minutes, hours or days.'
+                        "message" : 'Variables calls and unit should be  positive integers. Variable unit can be seconds, minutes, hours or days.'
                     });
                 }
                 if(!newConfiguration.burst && newConfiguration.burst !== 0) {
                     newConfiguration.burst = 0;
-                } else if(isInt(!newConfiguration.burst)) {
+                } else if(isInt(!newConfiguration.burst) || newConfiguration.burst <= 0 ) {
                     invalidConfiguration({
-                        "message" : 'Variable burst should be an integer. Default value is 0'
+                        "message" : 'Variable burst should be a positive integer. Default value is 0.'
                     });
                 }
                 newConfiguration.time *= units[newConfiguration.unit];
