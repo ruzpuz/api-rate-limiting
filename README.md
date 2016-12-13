@@ -4,7 +4,7 @@ Express middleware that will limit API calls as configured.
 
 ### Requirements 
 
-- [redis](https://redis.io/) should be installed on deployment machine. At this point only the default client creation is available. If the [following](https://github.com/NodeRedis/node_redis#rediscreateclient) section applies to your use case than unfortunately you will have to wait for next release. 
+- [redis](https://redis.io/) should be installed on deployment machine.
 
 ### How to use it
 
@@ -36,6 +36,7 @@ Configuration object should have following attributes:
     unit::String (seconds|minutes|hours|days)
     burst::Integer - optional
     getUserLimitations::Function - optional
+    redisCreateArguments::Array - optional
     uniqueField::Object - optional
     cookieParser::Object - optional
     
@@ -57,6 +58,7 @@ If unique field's section is set to be cookie then the middleware will try to pa
  
 Object ***cookieParser*** has 'section' and 'secret' fields that are used as described [here](https://github.com/expressjs/cookie-parser#cookieparsersecret-options)
 
+redisCreateAguments is an array of arguments that will be passed to createClient() function. Arguments will be passed as described [here](https://github.com/NodeRedis/node_redis#rediscreateclient)
 ### Different rates per user
 
 If different consumers of API have different rates user can pass a function to middleware that will be called when necessary. The function should asynchronously pass rates of an user back to middleware. 
