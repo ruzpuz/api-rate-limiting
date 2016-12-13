@@ -112,7 +112,7 @@ In that way user can log any events with proper importance
     var events = require('events'),
         eventEmitter = new events.EventEmitter();
         
-        eventEmitter.on('event', function(severity, message) {
+        eventEmitter.on('rate-limiting-info', function(severity, message) {
             //log your stuff
         });
         
