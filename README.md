@@ -91,5 +91,26 @@ This is an example of a valid configuration object.
             "name" : 'token'
         }
     }
+ 
     
 This configuration will mean that our API should handle 10 calls per 100 seconds. User will be identified by a token attribute in header section. 
+
+### Logging
+
+The middleware will inform the rest of application about important things that happen using event
+
+``rate-limiting-info``
+
+The event will bring two arguments 
+- severity
+- message object
+
+In that way user can log any events with proper importance
+
+    var events = require('events'),
+        eventEmitter = new events.EventEmitter();
+        
+        eventEmitter.on('event', function(severity, message) {
+            //log your stuff
+        });
+        
