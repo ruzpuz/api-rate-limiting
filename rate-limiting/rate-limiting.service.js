@@ -143,7 +143,9 @@
                     });
                 }
                 newConfiguration.time *= units[newConfiguration.unit];
-
+                timestamp = new Date();
+                burst = newConfiguration.burst;
+                available = newConfiguration.burst;
             } else {
                 timestamp =  new Date();
                 burst =  config.burst;
