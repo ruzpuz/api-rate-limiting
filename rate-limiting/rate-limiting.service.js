@@ -47,9 +47,9 @@
         }
         if(!configuration.burst && configuration.burst !== 0) {
             configuration.burst = 0;
-        } else if(isInt(!configuration.burst) || configuration.burst <= 0 ) {
+        } else if(isInt(!configuration.burst) || configuration.burst < 0 ) {
             invalidConfiguration({
-                "message" : 'Variable burst should be a positive integer. Default value is 0.'
+                "message" : 'Variable burst should be a positive integer or zero. Default value is 0.'
             });
         }
         if(configuration.redisCreateArguments) {
