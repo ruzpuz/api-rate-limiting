@@ -1,5 +1,8 @@
 # api-rate-limiting
 
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a765fbd838644b3dac9447bc9e02cab1)](https://www.codacy.com/app/ruzic-vladimir/api-rate-limiting?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ruzpuz/api-rate-limiting&amp;utm_campaign=badger)
+
 Express middleware that will limit API calls as configured. 
 
 ### Requirements 
