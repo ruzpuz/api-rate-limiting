@@ -62,6 +62,7 @@ If unique field's section is set to be cookie then the middleware will try to pa
 Object ***cookieParser*** has 'section' and 'secret' fields that are used as described [here](https://github.com/expressjs/cookie-parser#cookieparsersecret-options)
 
 redisCreateAguments is an array of arguments that will be passed to createClient() function. Arguments will be passed as described [here](https://github.com/NodeRedis/node_redis#rediscreateclient)
+
 ### Different rates per user
 
 If different consumers of API have different rates user can pass a function to middleware that will be called when necessary. The function should asynchronously pass rates of an user back to middleware. 
